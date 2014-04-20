@@ -47,8 +47,7 @@ $(function($) {
 <link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
 <?
 session_start();
-mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-mysql_select_db('refsys') or die('Could not select database');
+include_once 'mysql.php';
 if($_SESSION["logined"] != "1"){
 header("Location: login.php");
 }

@@ -125,9 +125,7 @@ if($kod == ""){
 echo '<center><img src="images/error.png"><font color="red">Nezadal si kód.</font></center>';
 }else{
 //connect to db
-$link = mysql_connect('46.36.35.188', 'kody', 'cooperpackheslo')
-    or die('Could not connect: ' . mysql_error());
-mysql_select_db('kody') or die('Could not select database');
+include_once 'mysqlcode.php';
 $query = mysql_query("SELECT `code`, `player`, `usage`, `time` FROM `code` WHERE `code` = '$kod'");
 $row = mysql_fetch_array($query, MYSQL_ASSOC);
 $playerrow = $row["player"];

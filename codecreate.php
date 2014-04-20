@@ -47,8 +47,7 @@ $(function($) {
 <link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
 <?
 session_start();
-mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-mysql_select_db('refsys') or die('Could not select database');
+include_once 'mysql.php';
 if($_SESSION["logined"] != "1"){
 header("Location: login.php");
 }
@@ -142,9 +141,7 @@ header("Location: index.php");
 	if(isset($_POST["cooperpackvipradio"])){
 	$kod = GenerateKey(8);
 	//Databaza
-	$link = mysql_connect('46.36.35.188', 'kody', 'cooperpackheslo')
-	or die('Could not connect: ' . mysql_error());
-	mysql_select_db('kody') or die('Could not select database');
+	include_once 'mysqlcode.php';
 	mysql_query("INSERT INTO `code` (`code` ,`usage` ,`player`, `time`) VALUES ('$kod',  'cooperpackvip',  '', '$time')");
 	echo "<center><img src='images/valid.png'><font color='green'>Kód: $kod</font></center>";
 	}

@@ -47,8 +47,7 @@ $(function($) {
 <link rel="stylesheet" type="text/css" media="all" href="niceforms-default.css" />
 <?
 session_start();
-mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-mysql_select_db('refsys') or die('Could not select database');
+include_once 'mysql.php';
 if($_SESSION["logined"] != "1"){
 header("Location: login.php");
 }
@@ -139,8 +138,7 @@ header("Location: index.php");
 				<center><img src="images/error.png"><font color="red">Kredity môžu byť len číslo.</font></center>
 				';
 			}else{
-				mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-				mysql_select_db('refsys') or die('Could not select database');
+				include_once 'mysql.php';
 				$a = mysql_query("SELECT `username` FROM `authme` WHERE username = '$ucet'");
 				$b = mysql_fetch_array($a);
 				if($b[0] == $ucet){

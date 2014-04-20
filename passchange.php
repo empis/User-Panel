@@ -119,8 +119,7 @@ header("Location: index.php");
 <?
 //Function
 function check_password_db($nickname,$password) {
-    $link = mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-	mysql_select_db('refsys') or die('Could not select database');
+    include_once 'mysql.php';
 	$a=mysql_query("SELECT password FROM authme where username = '$nickname'");
 	if(mysql_num_rows($a) == 1 ) {
 	   $password_info=mysql_fetch_array($a);
@@ -152,8 +151,7 @@ echo '
 }else{
 $noveheslo ='$SHA$'.'a1f9d6d409f03e2c'.'$'.hash('sha256',hash('sha256', $novepassword).'a1f9d6d409f03e2c');
 $meno = $_SESSION["loginmeno"];
-mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-mysql_select_db('refsys') or die('Could not select database');
+include_once 'mysql.php';
 mysql_query("UPDATE  `authme` SET  `password` =  '$noveheslo' WHERE  `username` =  '$meno'");
 echo '<center><img src="images/valid.png"><font color="green">Tvoje heslo je zmenené.</font></center>';
 }}}

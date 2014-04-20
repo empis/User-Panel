@@ -45,8 +45,7 @@ ddaccordion.init({
 <?
 //Function
 function check_password_db($nickname,$password) {
-    $link = mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-	mysql_select_db('refsys') or die('Could not select database');
+    include_once 'mysql.php';
 	$a=mysql_query("SELECT password FROM authme where username = '$nickname'");
 	if(mysql_num_rows($a) == 1 ) {
 	   $password_info=mysql_fetch_array($a);
@@ -88,8 +87,7 @@ echo '
 }else{
 $_SESSION['logined']=1;
 $_SESSION['loginmeno']=$meno;
-$link = mysql_connect('46.36.35.188', 'empis', 'cooperpackheslo') or die('Could not connect: ' . mysql_error());
-mysql_select_db('refsys') or die('Could not select database');
+include_once 'mysql.php';
 $b=mysql_query("SELECT admin FROM authme where username = '$meno'");
 $c=mysql_fetch_array($b);
 if($c[0] == 1){
