@@ -1,8 +1,8 @@
 <?
-$hostname = "46.36.35.188";
-$user = "empis";
-$pass = "cooperpackheslo";
-$db = "refsys";
+$hostname = "hostname";
+$user = "user";
+$pass = "password";
+$db = "database";
 mysql_connect($hostname, $user, $pass);
 mysql_select_db($db);
 ?>
