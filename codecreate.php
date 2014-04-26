@@ -80,6 +80,16 @@ header("Location: index.php");
                         
                     <!--[if lte IE 6]></td></tr></table></a><![endif]-->
                     </li>
+					<li><a >Obchod<!--[if IE 7]><!--></a><!--<![endif]-->
+                    <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <ul>
+                        <li><a href="shop.php" title="">Item</a></li>
+						<li><a href="shopvip.php" title="">Vip</a></li>
+                        <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                        </ul>
+                    <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                    </li>
                     <li><a>Nastavenia<!--[if IE 7]><!--></a><!--<![endif]-->
                     <!--[if lte IE 6]><table><tr><td><![endif]-->
                         <ul>
@@ -119,7 +129,7 @@ header("Location: index.php");
     
     <div class="right_content">            
         
-    <h2>Nastavenie účtov</h2> 
+    <h2>Vytvorenie kódu</h2> 
 	<?
 	if (isset($_POST['vytvoreniekodu'])) {
 	//FUNCTION
@@ -133,36 +143,72 @@ header("Location: index.php");
 	}
 	//OOOOOOOOOOO
 	$time = $_POST['cas'];
-	if($time == "" || !isset($_POST["cooperpackvipradio"])){
+	if($time == ""){
 		echo '
-		<center><img src="images/error.png"><font color="red">Nezadal si čas alebo si nevybral typ kódu.</font></center>
+		<center><img src="images/error.png"><font color="red">Nezadal si čas.</font></center>
 		';
 		}else{
-	if(isset($_POST["cooperpackvipradio"])){
+	if(!isset($_POST["autogen"]) && $_POST["kod"] == ""){
+		echo '
+		<center><img src="images/error.png"><font color="red">Nevyplnil si kód.</font></center>
+		';
+		}else{
+		 if(isset($_POST["cooperpackvipradio"]) ||isset($_POST["freecooperpackvipradio"]) || isset($_POST["freekredityradio"])){
+	if(isset($_POST["autogen"])){
 	$kod = GenerateKey(8);
+	}else{
+	$kod = $_POST["kod"];
+	}
+	if(isset($_POST["cooperpackvipradio"])){
 	//Databaza
 	include_once 'mysqlcode.php';
 	mysql_query("INSERT INTO `code` (`code` ,`usage` ,`player`, `time`) VALUES ('$kod',  'cooperpackvip',  '', '$time')");
 	echo "<center><img src='images/valid.png'><font color='green'>Kód: $kod</font></center>";
+	}else if(isset($_POST["freecooperpackvipradio"])){
+	//Databaza
+	include_once 'mysqlcode.php';
+	mysql_query("INSERT INTO `code` (`code` ,`usage` ,`player`, `time`) VALUES ('$kod',  'freecooperpackvip',  '', '$time')");
+	echo "<center><img src='images/valid.png'><font color='green'>Kód: $kod</font></center>";
+	}else if(isset($_POST["freekredityradio"])){
+	//Databaza
+	include_once 'mysqlcode.php';
+	mysql_query("INSERT INTO `code` (`code` ,`usage` ,`player`, `time`) VALUES ('$kod',  'freekredity',  '', '$time')");
+	echo "<center><img src='images/valid.png'><font color='green'>Kód: $kod</font></center>";
+	}
+	}else{
+	echo '
+		<center><img src="images/error.png"><font color="red">Nevybral si typ kódu.</font></center>
+		';
+	}
 	}
 	}
 	}
 	?>
 <div class="form">
-         <form action="" method="post" class="niceform">
+         <form action="?" method="post" class="niceform">
                 <fieldset>
 					<dl>
                         <dt><label for="color">Typ:</label></dt>
                         <dd>
                             <input type="radio" name="cooperpackvipradio" id="" value="" /><label class="check_label">CooperPack VIP</label>
+							<input type="radio" name="freecooperpackvipradio" id="" value="" /><label class="check_label">Free CooperPack VIP</label>
+							<input type="radio" name="freekredityradio" id="" value="" /><label class="check_label">Free Kredity</label>
                         </dd>
+                    </dl>
+					<dl>
+                        <dt><label for="email">Kód:</label></dt>
+                        <dd><input type="text" name="kod" id="" size="54" /></dd>
+                    </dl>
+					<dl>
+						<dt></dt>
+						<dd><center><input type="checkbox" name="autogen" id="" value="" /><label class="check_label">Automaticky Vygenerovať</label></center></dd>
                     </dl>
 					<dl>
                         <dt><label for="email">Dní:</label></dt>
                         <dd><input type="text" name="cas" id="" size="54" /></dd>
                     </dl>
 					<dl class="submit">
-                    <input type="submit" name="vytvoreniekodu" id="submit" value="Submit" />
+                    <input type="submit" name="vytvoreniekodu" id="submit" value="Vytvoriť" />
                      </dl>
 					 </fieldset>
 					 </form>

@@ -77,6 +77,16 @@ header("Location: index.php");
                         
                     <!--[if lte IE 6]></td></tr></table></a><![endif]-->
                     </li>
+					<li><a >Obchod<!--[if IE 7]><!--></a><!--<![endif]-->
+                    <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <ul>
+                        <li><a href="shop.php" title="">Item</a></li>
+						<li><a href="shopvip.php" title="">Vip</a></li>
+                        <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                        </ul>
+                    <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                    </li>
                     <li><a>Nastavenia<!--[if IE 7]><!--></a><!--<![endif]-->
                     <!--[if lte IE 6]><table><tr><td><![endif]-->
                         <ul>
@@ -131,13 +141,14 @@ $row = mysql_fetch_array($query, MYSQL_ASSOC);
 $playerrow = $row["player"];
 $timerow = $row["time"];
 if($row["code"] != $kod){ echo '<center><img src="images/error.png"><font color="red">Zadany kod neexistuje, over ci si ho zadal spravne, ak problem pretrva kontaktujte admina.</font></center>'; }else{
-if($row["player"] != ""){ echo "<center><img src='images/error.png'><font color='red'>Kod uz bol pouzity hracom $playerrow</font></center>"; }else{
 if($row["usage"] == "cooperpackvip"){
+if($row["player"] != ""){ echo "<center><img src='images/error.png'><font color='red'>Kod uz bol pouzity hracom $playerrow</font></center>"; }else{
     $time = $row["time"] * 86400;
     include_once 'Websend.php';
     
     $ws = new Websend("cp.empis.eu");
-    $ws->password = "supertajneheslocooperpack";
+	include_once "mysql.php";
+    $ws->password = $websend;
     
     if($ws->connect()){
         $ws->doCommandAsConsole('pex user '.$hrac.' group add vip "" '.$time);
@@ -147,8 +158,42 @@ if($row["usage"] == "cooperpackvip"){
     }else{
         echo '<center><img src="images/error.png"><font color="red">Nepodarilo sa pripojiť.</font></center>';
     }
-}//koniec cooperpackvip
-} //koniec overenia pouzitia
+	}
+}else if($row["usage"] == "freecooperpackvip"){
+$hracc = explode(" ", $row["player"]);
+if(in_array($_SESSION["loginmeno"], $hracc)){ echo '<center><img src="images/error.png"><font color="red">Už si použil tento kód.</font></center>'; }else{
+$time = $row["time"] * 86400;
+    include_once 'Websend.php';
+    
+    $ws = new Websend("cp.empis.eu");
+	include_once "mysql.php"
+    $ws->password = $websend;
+    
+    if($ws->connect()){
+        $ws->doCommandAsConsole('pex user '.$hrac.' group add vip "" '.$time);
+        $ws->disconnect();
+		$updateplayer = $row["player"]." ".$_SESSION["loginmeno"];
+	    mysql_query("UPDATE `code` SET `player`='$updateplayer' WHERE `code`='$kod'");
+		echo "<center><img src='images/valid.png'><font color='green'>Vip aktivovane na $timerow dni pre $hracc na servery CooperPack.</font></center>";
+    }else{
+        echo '<center><img src="images/error.png"><font color="red">Nepodarilo sa pripojiť.</font></center>';
+    }
+}
+}else if($row["usage"] == "freekredity"){
+$hracc = explode(" ", $row["player"]);
+if(in_array($_SESSION["loginmeno"], $hracc)){ echo '<center><img src="images/error.png"><font color="red">Už si použil tento kód.</font></center>'; }else{
+		$updateplayer = $row["player"]." ".$_SESSION["loginmeno"];
+	    mysql_query("UPDATE `code` SET `player`='$updateplayer' WHERE `code`='$kod'");
+		mysql_close();
+		include_once "mysql.php";
+		$query2 = mysql_query("SELECT * FROM `authme` WHERE `username` = '$hrac'");
+		$row2 = mysql_fetch_array($query2, MYSQL_ASSOC);
+		$updatekredity = $row2["kredity"]+$row["time"];
+		$pocetkreditov = $row["time"];
+		mysql_query("UPDATE `authme` SET `kredity`='$updatekredity' WHERE `username`='$hrac'");
+		echo "<center><img src='images/valid.png'><font color='green'>Na tvoj účet bolo pripočítaných '$pocetkreditov' kreditov.</font></center>";
+    }
+}
 } //koniec overenia kodu
 }}
 					?>

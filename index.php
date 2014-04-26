@@ -77,6 +77,16 @@ header("Location: index.php");
                         
                     <!--[if lte IE 6]></td></tr></table></a><![endif]-->
                     </li>
+					<li><a >Obchod<!--[if IE 7]><!--></a><!--<![endif]-->
+                    <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <ul>
+                        <li><a href="shop.php" title="">Item</a></li>
+						<li><a href="shopvip.php" title="">Vip</a></li>
+                        <!--[if lte IE 6]><table><tr><td><![endif]-->
+                        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                        </ul>
+                    <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+                    </li>
                     <li><a>Nastavenia<!--[if IE 7]><!--></a><!--<![endif]-->
                     <!--[if lte IE 6]><table><tr><td><![endif]-->
                         <ul>

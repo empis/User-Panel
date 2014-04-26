@@ -457,3 +457,17 @@ margin-right: 2px;
 border: 1px solid #f3f3f3;
 color: #ccc;
 }
+
+.dval-img {
+    border-radius: 1px 1px 1px 1px;
+    height: 16px;
+    margin: 0;
+    padding: 1px;
+    width: 16px;
+}
+
+.cost {
+  color: #a3a3a3;
+  font-family:arial;
+  font-size: 8pt;
+} 
